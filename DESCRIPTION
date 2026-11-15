@@ -37,7 +37,6 @@ Imports: coda (>= 0.11-0), boot
 SystemRequirements: OpenBUGS (>= 3.2.2)
 License: GPL-2
 NeedsCompilation: no
-Packaged: 2026-02-23 13:35:16 UTC; ligges
 Author: Andrew Gelman [aut],
   Sibylle Sturtz [aut],
   Uwe Ligges [cre, aut],
@@ -45,5 +44,3 @@ Author: Andrew Gelman [aut],
   Jouni Kerman [ctb],
   Neal Thomas [aut] (adapted from R2WinBUGS)
 Maintainer: Uwe Ligges <ligges@statistik.tu-dortmund.de>
-Repository: CRAN
-Date/Publication: 2026-02-23 17:00:29 UTC

@@ -104,12 +104,10 @@
         if (dk > 0) {
           for (m in 1:dk) {
             index0 <- indexes.short[[k]][[j]][m]
-            if (j == 1) {
-              text(A + B * spacing * j, -k - height / 2 - .05 - num.height * (m - 1), index0,
-                cex = cex.tiny
-              )
-            } else if (index0 != indexes.short[[k]][[j - 1]][m] &&
-              (index0 %% (floor(log10(index0) + 1)) == 0)) {
+            # `||` short-circuits, so indexes.short[[k]][[0]] is never read.
+            round_index <- index0 %% (floor(log10(index0) + 1)) == 0
+            label_index <- j == 1 || (index0 != indexes.short[[k]][[j - 1]][m] && round_index)
+            if (label_index) {
               text(A + B * spacing * j, -k - height / 2 - .05 - num.height * (m - 1), index0,
                 cex = cex.tiny
               )

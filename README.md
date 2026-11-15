@@ -3,7 +3,7 @@
 [![CRAN status](https://www.r-pkg.org/badges/version/R2OpenBUGS)](https://CRAN.R-project.org/package=R2OpenBUGS)
 [![R-CMD-check](https://github.com/finite-sample/R2OpenBUGS/actions/workflows/R-CMD-check.yml/badge.svg)](https://github.com/finite-sample/R2OpenBUGS/actions/workflows/R-CMD-check.yml)
 
-R2OpenBUGS runs an [OpenBUGS](https://www.mrc-bsu.cam.ac.uk/software/bugs-project/)
+R2OpenBUGS runs an [OpenBUGS](https://www.medschl.cam.ac.uk/institutions/mrc-bsu/software-mrc-biostatistics-unit)
 model from R. You write the model in the BUGS language, pass data and initial
 values from R, and get back the simulations as R arrays, with a summary table
 of each parameter's posterior mean, quantiles, and the convergence statistics

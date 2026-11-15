@@ -25,7 +25,8 @@ findOpenBUGS <- function() {
   version.inst <- gsub("(.+)e$", "\\1", ver)
 
   if (length(version.inst > 1)) {
-    id <- which(apply(outer(version.inst, version.inst, Vectorize(compareVersion, c("a", "b"))), 1, function(x) all(x >= 0)))
+    cmp <- outer(version.inst, version.inst, Vectorize(compareVersion, c("a", "b")))
+    id <- which(apply(cmp, 1, function(x) all(x >= 0)))
     version.inst <- version.inst[id]
     rnames <- rnames[id]
   }
@@ -34,5 +35,6 @@ findOpenBUGS <- function() {
     warning("Found OpenBUGS version ", version.inst, ".\n Requires ", version.req, " or greater.")
   }
 
-  utils::readRegistry(paste("Software", "OpenBUGS", rnames, sep = "\\"), "HLM", view = "32-bit")[["InstallPath"]]
+  key <- paste("Software", "OpenBUGS", rnames, sep = "\\")
+  utils::readRegistry(key, "HLM", view = "32-bit")[["InstallPath"]]
 }

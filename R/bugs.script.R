@@ -29,7 +29,9 @@
     coda <- native2win(coda, useWINE = useWINE, newWINE = newWINE, WINEPATH = WINEPATH)
 
     model.file.bug <- file.path(working.directory, model.file.bug)
-    model.file.bug <- native2win(model.file.bug, useWINE = useWINE, newWINE = newWINE, WINEPATH = WINEPATH)
+    model.file.bug <- native2win(model.file.bug,
+      useWINE = useWINE, newWINE = newWINE, WINEPATH = WINEPATH
+    )
 
     logFile <- file.path(working.directory, "log.odc")
     logFile <- native2win(logFile, useWINE = useWINE, newWINE = newWINE, WINEPATH = WINEPATH)

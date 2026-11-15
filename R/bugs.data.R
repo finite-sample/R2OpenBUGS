@@ -13,5 +13,5 @@
         file.path(dir, data.file)
       )
     }
-    return(data.file)
+    data.file
   }

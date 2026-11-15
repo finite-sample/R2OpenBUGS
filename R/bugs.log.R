@@ -35,7 +35,7 @@ bugs.log <- function(file) {
     cm <- cm[-1, -1] # delete dimname row/columns
     m <- matrix(as.numeric(cm), nrow = nrow(cm)) # convert to numeric
     dimnames(m) <- list(row.names, col.names)
-    return(m)
+    m
   }
   stats <- extract(log.txt, "Summary statistics")
   DIC <- extract(log.txt, "Deviance information", skip = 0, empty.left.col = FALSE)

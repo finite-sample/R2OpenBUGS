@@ -7,7 +7,7 @@ validateInstallOpenBUGS <- function(
 
   if (is.null(OpenBUGS.pgm)) {
     OpenBUGS.pgm <- findOpenBUGS()
-    if (.Platform$OS.type == "windows" | useWINE == TRUE) {
+    if (.Platform$OS.type == "windows" || isTRUE(useWINE)) {
       OpenBUGS.pgm <- file.path(OpenBUGS.pgm, "OpenBUGS.exe")
     }
   } else if (OpenBUGS.pgm == "OpenBUGS") {
@@ -50,7 +50,9 @@ validateInstallOpenBUGS <- function(
 
   ### Test for posterior means within 1 percent of previously saved values
 
-  res.true <- dget(file = system.file("validateInstallOpenBUGS/validOpenBUGSResults.R", package = "R2OpenBUGS"))
+  res.true <- dget(
+    file = system.file("validateInstallOpenBUGS/validOpenBUGSResults.R", package = "R2OpenBUGS")
+  )
 
   message(
     "The version of OpenBUGS on your computer is being compared to validation\n",
@@ -58,8 +60,10 @@ validateInstallOpenBUGS <- function(
   )
 
   for (i in seq(along = test.models)) {
-    exfiles <- dir(system.file("validateInstallOpenBUGS", package = "R2OpenBUGS"), pattern = test.pattern[i], full.names = TRUE)
-    ok <- file.copy(exfiles, tempdir())
+    exfiles <- dir(system.file("validateInstallOpenBUGS", package = "R2OpenBUGS"),
+      pattern = test.pattern[i], full.names = TRUE
+    )
+    file.copy(exfiles, tempdir())
     fit <- round(bugs(
       data = test.datafile[i], inits = test.inits[i],
       parameters.to.save = test.params[[test.models[i]]], model.file = test.modelfile[i],

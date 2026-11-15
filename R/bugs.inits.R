@@ -16,5 +16,5 @@
         }
       }
     }
-    return(inits.files)
+    inits.files
   }

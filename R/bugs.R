@@ -40,12 +40,13 @@
       stop("OpenBUGS seed must be integer in 1:14")
     }
 
-    if (!is.function(model.file) &&
-      length(grep("\\.bug", tolower(model.file)))) {
+    if (!is.function(model.file) && length(grep("\\.bug", tolower(model.file)))) {
       stop("model.file must be renamed with .txt rather than .bug")
     }
 
-    if (is.null(working.directory) && (saveExec || restart)) stop("The working directory must be specified when saveExec or restart is TRUE")
+    if (is.null(working.directory) && (saveExec || restart)) {
+      stop("The working directory must be specified when saveExec or restart is TRUE")
+    }
 
     if (!is.null(working.directory)) {
       working.directory <- path.expand(working.directory)
@@ -98,8 +99,9 @@
     if (file.info(model.file)$isdir) {
       stop(paste(model.file, "is a directory, but a file is required."))
     }
-    if (!(length(data) == 1 && is.vector(data) && is.character(data) &&
-      (regexpr("\\.txt$", data) > 0))) {
+    data_is_file <- length(data) == 1 && is.vector(data) && is.character(data) &&
+      (regexpr("\\.txt$", data) > 0)
+    if (!data_is_file) {
       bugs.data.file <- bugs.data(data, dir = getwd(), digits)
     } else {
       if (inTempDir && all(basename(data) == data)) {
@@ -133,7 +135,9 @@
     ## Model files must have extension ".txt"
     if (!length(grep("\\.txt$", tolower(model.file)))) {
       new.model.file <- paste(basename(model.file), ".txt", sep = "")
-      if (!is.null(working.directory)) new.model.file <- file.path(working.directory, new.model.file)
+      if (!is.null(working.directory)) {
+        new.model.file <- file.path(working.directory, new.model.file)
+      }
       file.copy(model.file, new.model.file, overwrite = TRUE)
       on.exit(try(file.remove(new.model.file)), add = TRUE)
     } else {
@@ -143,7 +147,9 @@
     ## Create a filename model.file + .bug
     model.file.bug <- gsub("\\.txt", ".bug", basename(new.model.file))
 
-    if (restart && !file.exists(model.file.bug)) stop("The .bug restart file was not found in the working directory")
+    if (restart && !file.exists(model.file.bug)) {
+      stop("The .bug restart file was not found in the working directory")
+    }
 
     if (useWINE) {
       ## Some tweaks for wine (particularly required for Mac OS)

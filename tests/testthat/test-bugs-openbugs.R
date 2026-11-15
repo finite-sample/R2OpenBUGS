@@ -23,7 +23,7 @@ test_that("bugs() summary agrees with its own draws and with coda", {
   expect_s3_class(fit, "bugs")
   expect_identical(dim(fit$sims.array), c(1000L, 3L, 11L))
   expect_equal(fit$summary[, "mean"], colMeans(fit$sims.matrix))
-  expect_equal(fit$mean$theta, unname(colMeans(fit$sims.list$theta)))
+  expect_equal(as.vector(fit$mean$theta), unname(colMeans(fit$sims.list$theta)))
   expect_equal(fit$summary, monitor(fit$sims.array, keep.all = TRUE))
   chains <- as.mcmc.list(fit)
   expect_equal(summary(chains)$statistics[, "Mean"], fit$summary[colnames(chains[[1]]), "mean"])

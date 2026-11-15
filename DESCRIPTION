@@ -44,3 +44,5 @@ Author: Andrew Gelman [aut],
   Jouni Kerman [ctb],
   Neal Thomas [aut] (adapted from R2WinBUGS)
 Maintainer: Uwe Ligges <ligges@statistik.tu-dortmund.de>
+URL: https://github.com/finite-sample/R2OpenBUGS
+BugReports: https://github.com/finite-sample/R2OpenBUGS/issues

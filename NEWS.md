@@ -1,5 +1,21 @@
 # R2OpenBUGS (development version)
 
+## Repository and documentation
+
+- The package now lives at <https://github.com/finite-sample/R2OpenBUGS>, with
+  a README and a pkgdown site at <https://finite-sample.github.io/R2OpenBUGS/>.
+- The change log moved from `inst/NEWS` to this `NEWS.md`, one section per
+  release.
+- The vignette and the code use US English (`Language: en-US`).
+
+## Internal
+
+- The R code is restyled to the tidyverse style guide. A parse-tree comparison
+  of every file before and after shows the restyle changes no code.
+- Small cleanups with no effect on valid input: `&&`/`||` in `if()`
+  conditions, `seq_len()` in `bugs.run()`, unused variables and dead
+  commented-out code removed.
+
 # R2OpenBUGS 3.2-5
 
 - conv.par() no longer stops with "missing value where TRUE/FALSE needed"

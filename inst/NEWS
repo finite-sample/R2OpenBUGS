@@ -1,5 +1,23 @@
 Changes to R2OpenBUGS:
 ======================
+Update 3.2-5
+- conv.par() no longer stops with "missing value where TRUE/FALSE needed"
+  when the within-chain variance W is NA; such parameters are treated as
+  degenerate (Rhat and n.eff set to 1) in monitor() and the bugs() summary
+- vignette: URL updates
+
+Update 3.2-4
+- new maintainer: Uwe Ligges; DESCRIPTION now uses Authors@R
+- attach.bugs() checks its argument with inherits(x, "bugs") instead of
+  class(x) != "bugs", so objects with more than one class work
+- CITATION converted to bibentry() and now gives the JSS DOI
+- ?bugs: example setup (data, inits, parameters) now runs, only the call to
+  bugs() stays in \dontrun{}; Rd markup fixes
+
+Update 3.2-3.2.1
+- non-maintainer update packaged by the CRAN team: data/schools.txt is now
+  shipped compressed as data/schools.txt.gz (contents unchanged)
+
 Update 3.2-3.2
 - Change printing of DIC to match the number of digits in the summary
 - Change attach.all for linux compatibility

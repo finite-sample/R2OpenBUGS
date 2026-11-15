@@ -49,7 +49,7 @@ as.bugs.array <- function(sims.array, model.file = NULL, program = NULL,
     long.short[[j]] <- (1:n.parameters)[root.long == root.short[j]]
     length.short[j] <- length(long.short[[j]])
     if (length.short[j] == 0) {
-      stop(paste("parameter", root.short[[j]], "is not in the model"))
+      cli::cli_abort("Parameter {.val {root.short[[j]]}} is not in the model.")
     } else if (length.short[j] > 1) {
       dimension.short[j] <- length(indexes.long[[long.short[[j]][1]]])
       n.indexes.short[[j]] <- numeric(dimension.short[j])

@@ -133,7 +133,9 @@ bugs(data, inits, parameters.to.save, n.iter, model.file="model.txt",
     details.}
   \item{summary.only}{If \code{TRUE}, only a parameter summary for very quick analyses is given, 
     temporary created files are not removed in that case.}
-  \item{save.history}{If \code{TRUE} (the default), trace plots are generated at the end.}
+  \item{save.history}{If \code{TRUE}, trace plots are generated at the end. The default is
+    \code{TRUE} on Windows or under WINE, where it is available, and \code{FALSE} otherwise;
+    \code{TRUE} elsewhere is an error.}
   \item{over.relax}{If \code{TRUE}, over-relaxed form of MCMC is used if available from OpenBUGS.}
 }
 
@@ -188,7 +190,8 @@ bugs(data, inits, parameters.to.save, n.iter, model.file="model.txt",
   \item{n.burnin}{see Section \sQuote{Arguments}}
   \item{n.thin}{see Section \sQuote{Arguments}}
   \item{n.keep}{number of iterations kept per chain (equal to
-    \code{(n.iter-n.burnin) / n.thin})}
+    \code{n.iter - n.burnin}; thinning happens inside OpenBUGS, see
+    \code{n.thin})}
   \item{n.sims}{number of posterior simulations (equal to
     \code{n.chains * n.keep})}
   \item{sims.array}{3-way array of simulation output, with dimensions

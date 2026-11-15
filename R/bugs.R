@@ -11,6 +11,14 @@
     save.history = (.Platform$OS.type == "windows" | useWINE == TRUE),
     over.relax = FALSE
   ) {
+    check_bugs_args(
+      parameters.to.save = parameters.to.save, n.iter = n.iter, model.file = model.file,
+      n.chains = n.chains, n.burnin = n.burnin, n.thin = n.thin, saveExec = saveExec,
+      restart = restart, debug = debug, DIC = DIC, digits = digits, codaPkg = codaPkg,
+      working.directory = working.directory, clearWD = clearWD, useWINE = useWINE,
+      newWINE = newWINE, bugs.seed = bugs.seed, summary.only = summary.only,
+      save.history = save.history, over.relax = over.relax
+    )
     if (is.null(OpenBUGS.pgm)) {
       OpenBUGS.pgm <- findOpenBUGS()
       if (.Platform$OS.type == "windows" || useWINE) {
@@ -21,7 +29,10 @@
     }
 
     if (!file.exists(OpenBUGS.pgm)) {
-      stop("Cannot find the OpenBUGS program")
+      cli::cli_abort(c(
+        "Cannot find the OpenBUGS program.",
+        i = "Set {.arg OpenBUGS.pgm}, or put {.code OpenBUGS} on the PATH."
+      ))
     }
 
     ## Is OpenBUGS.pgm defined in Windows (where second character is :
@@ -32,20 +43,20 @@
 
     ### check options for unix/linux
     if (.Platform$OS.type != "windows" && !useWINE) {
-      if (debug) stop("The debug option is not available with linux/unix")
-      if (save.history) ("History plots (save.history) are not available with linux/unix")
-    }
-
-    if (!bugs.seed %in% 1:14) {
-      stop("OpenBUGS seed must be integer in 1:14")
+      if (debug) cli::cli_abort("{.arg debug} is not available on Linux or macOS.")
+      if (save.history) {
+        cli::cli_abort("{.arg save.history} (history plots) is not available on Linux or macOS.")
+      }
     }
 
     if (!is.function(model.file) && length(grep("\\.bug", tolower(model.file)))) {
-      stop("model.file must be renamed with .txt rather than .bug")
+      cli::cli_abort("{.arg model.file} must end in {.file .txt}, not {.file .bug}.")
     }
 
     if (is.null(working.directory) && (saveExec || restart)) {
-      stop("The working directory must be specified when saveExec or restart is TRUE")
+      cli::cli_abort(
+        "{.arg working.directory} must be set when {.arg saveExec} or {.arg restart} is TRUE."
+      )
     }
 
     if (!is.null(working.directory)) {
@@ -57,7 +68,9 @@
 
     ## Checking number of inits, which is NOT saved here:
     if (!missing(inits) && !is.function(inits) && !is.null(inits) && (length(inits) != n.chains)) {
-      stop("Number of initialized chains (length(inits)) != n.chains")
+      cli::cli_abort(
+        "{.arg inits} has {length(inits)} element{?s}, but {.arg n.chains} is {n.chains}."
+      )
     }
 
     ## Wine
@@ -94,10 +107,10 @@
       try(file.copy(file.path(savedWD, model.file), model.file, overwrite = TRUE))
     }
     if (!file.exists(model.file)) {
-      stop(paste(model.file, "does not exist."))
+      cli::cli_abort("Model file {.file {model.file}} does not exist.")
     }
     if (file.info(model.file)$isdir) {
-      stop(paste(model.file, "is a directory, but a file is required."))
+      cli::cli_abort("{.arg model.file} {.file {model.file}} is a directory, not a file.")
     }
     data_is_file <- length(data) == 1 && is.vector(data) && is.character(data) &&
       (regexpr("\\.txt$", data) > 0)
@@ -108,7 +121,7 @@
         try(file.copy(file.path(savedWD, data), data, overwrite = TRUE))
       }
       if (!file.exists(data)) {
-        stop("File", data, "does not exist.")
+        cli::cli_abort("Data file {.file {data}} does not exist.")
       }
       bugs.data.file <- data
     }
@@ -118,15 +131,20 @@
         try(file.copy(file.path(savedWD, inits), inits, overwrite = TRUE))
       }
       if (!all(file.exists(inits))) {
-        stop("One or more inits files are missing")
+        cli::cli_abort("Inits file{?s} {.file {inits[!file.exists(inits)]}} {?does/do} not exist.")
       }
       if (length(inits) != n.chains) {
-        stop("Need one inits file for each chain")
+        cli::cli_abort(c(
+          "{.arg inits} names {length(inits)} file{?s}, but {.arg n.chains} is {n.chains}.",
+          i = "Give one inits file per chain."
+        ))
       }
       bugs.inits.files <- inits
     } else {
       if (!is.function(inits) && !is.null(inits) && (length(inits) != n.chains)) {
-        stop("Number of initialized chains (length(inits)) != n.chains")
+        cli::cli_abort(
+          "{.arg inits} has {length(inits)} element{?s}, but {.arg n.chains} is {n.chains}."
+        )
       }
       bugs.inits.files <- bugs.inits(inits, n.chains, digits)
     }
@@ -148,7 +166,9 @@
     model.file.bug <- gsub("\\.txt", ".bug", basename(new.model.file))
 
     if (restart && !file.exists(model.file.bug)) {
-      stop("The .bug restart file was not found in the working directory")
+      cli::cli_abort(
+        "Restart file {.file {model.file.bug}} was not found in the working directory."
+      )
     }
 
     if (useWINE) {

@@ -6,7 +6,7 @@ bugs.log <- function(file) {
   # - makes fewer assumptions about the structure of the matrix
 
   if (!file.exists(file)) {
-    stop("Log file", file, "does not exist")
+    cli::cli_abort("Log file {.file {file}} does not exist.")
   }
   log.txt <- readLines(file, warn = FALSE)
   extract <- function(m, line.match, skip = 0, empty.left.col = TRUE) {

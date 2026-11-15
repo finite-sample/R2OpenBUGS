@@ -1,5 +1,18 @@
 # R2OpenBUGS (development version)
 
+## Argument checks and errors
+
+- `bugs()` checks its arguments before looking for OpenBUGS, with checkmate,
+  and names the one that is wrong. Values that used to fail inside OpenBUGS
+  or on an unrelated line (`n.thin = 0`, `n.chains = 0`, `n.iter = 10.5`,
+  `DIC = NA`, an empty `parameters.to.save`) now fail at once.
+- `save.history = TRUE` on Linux or macOS is now an error, like
+  `debug = TRUE` there. It was meant to be one, but the check was a no-op.
+- Errors use `cli::cli_abort()`. Two messages that ran words together
+  ("Log filelog.txtdoes not exist") are fixed.
+- `?bugs` documented `n.keep` as `(n.iter - n.burnin) / n.thin`; it is
+  `n.iter - n.burnin`, since thinning happens inside OpenBUGS.
+
 ## Bug fixes
 
 - `as.bugs.array()` placed the draws of a matrix or higher-dimensional

@@ -1,7 +1,7 @@
 "formatdata" <-
   function(datalist) {
     if (!is.list(datalist) || is.data.frame(datalist)) {
-      stop("Argument to formatdata() must be a list.")
+      cli::cli_abort("{.arg datalist} must be a list, not {.obj_type_friendly {datalist}}.")
     }
     n <- length(datalist)
     datalist.string <- vector(n, mode = "list")

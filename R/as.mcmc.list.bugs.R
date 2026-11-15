@@ -1,9 +1,11 @@
 as.mcmc.list.bugs <- function(x, ...) {
   if (!inherits(x, "bugs")) {
-    stop("Method as.mcmc.list.bugs() is only intended for bugs objects.")
+    cli::cli_abort("{.fn as.mcmc.list.bugs} needs a {.cls bugs} object.")
   }
   if (dim(x$sims.array)[2] != x$n.chains) {
-    stop("Inconsistency in bug object regarding the number of chains.")
+    cli::cli_abort(
+      "The {.cls bugs} object's {.field sims.array} and {.field n.chains} disagree on the chains."
+    )
   }
   mclis <- vector("list", x$n.chains)
   strt <- x$n.burnin + 1

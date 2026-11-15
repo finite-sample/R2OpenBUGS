@@ -1,0 +1,7 @@
+[codespell]
+# Binary vignette figures, the bibliography (quoted titles keep their
+# original spelling), BibTeX style and class files, and the OpenBUGS example
+# models copied verbatim from the OpenBUGS distribution.
+skip = *.pdf,*.gz,*.bib,*.bst,*.cls,*.sty,./inst/validateInstallOpenBUGS
+# "burnin" is the standard MCMC term and part of the n.burnin argument name.
+ignore-words-list = burnin

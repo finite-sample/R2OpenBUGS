@@ -15,7 +15,10 @@ validateInstallOpenBUGS <- function(
   }
 
   if (!file.exists(OpenBUGS.pgm)) {
-    stop("Cannot find the OpenBUGS program")
+    cli::cli_abort(c(
+      "Cannot find the OpenBUGS program.",
+      i = "Set {.arg OpenBUGS.pgm}, or put {.code OpenBUGS} on the PATH."
+    ))
   }
 
   test.models <- c(

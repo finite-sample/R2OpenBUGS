@@ -27,7 +27,7 @@ findUnixBinary <- function(x) {
     return(tmp)
   }
 
-  stop(paste("couldn't find", x, "binary file"))
+  cli::cli_abort("Could not find the {.code {x}} program.")
 }
 
 native2win <- function(x, useWINE = .Platform$OS.type != "windows",
@@ -106,7 +106,10 @@ winedriveRTr <- function(unixpath, DriveTable = winedriveMap()) {
     windrive <- paste(DriveTable$drive[min(path, na.rm = TRUE)], "/", sep = "")
     winpath <- sub("//", "/", sub(unixdir, windrive, unixpath)) ## kludge
   } else {
-    stop("can't find equivalent Windows path: file may be inaccessible")
+    cli::cli_abort(c(
+      "Could not translate {.file {unixpath}} to a Windows path.",
+      i = "The file may be inaccessible."
+    ))
   }
   winpath
 }

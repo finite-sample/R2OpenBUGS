@@ -25,7 +25,7 @@ attach.all <- function(x, overwrite = NA, name = "attach.all") {
 
 attach.bugs <- function(x, overwrite = NA) {
   if (!inherits(x, "bugs")) {
-    stop("attach.all() requires a bugs object.")
+    cli::cli_abort("{.fn attach.bugs} needs a {.cls bugs} object.")
   }
   if ("bugs.sims" %in% search()) {
     detach("bugs.sims")

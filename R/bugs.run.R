@@ -23,7 +23,7 @@
     }
 
     if (temp == -1) {
-      stop("Error in bugs.run().")
+      cli::cli_abort("OpenBUGS did not run; the system call returned an error.")
     }
 
     ##   !!!! need to check these conditions
@@ -31,9 +31,9 @@
     tmp <- scan("CODAchain1.txt", character(), quiet = TRUE, sep = "\n")
     tmp <- tmp[seq_len(min(100, length(tmp)))]
     if (length(grep("OpenBUGS did not run correctly", tmp)) > 0) {
-      stop(paste(
-        "Look at the log file in ", getwd(),
-        " and\ntry again with 'debug=TRUE' to figure out what went wrong within OpenBUGS."
+      cli::cli_abort(c(
+        "OpenBUGS did not run correctly.",
+        i = "See the log file in {.path {getwd()}}, and try again with {.code debug = TRUE}."
       ))
     }
   }

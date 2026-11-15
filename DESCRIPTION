@@ -1,7 +1,6 @@
 Package: R2OpenBUGS
 Title: Running OpenBUGS from R
-Date: 2026-02-23
-Version: 3.2-5
+Version: 3.2-5.9000
 Authors@R: c(person(given = "Andrew",
                         family = "Gelman",
                         role = "aut",
@@ -46,3 +45,4 @@ Author: Andrew Gelman [aut],
 Maintainer: Uwe Ligges <ligges@statistik.tu-dortmund.de>
 URL: https://github.com/finite-sample/R2OpenBUGS
 BugReports: https://github.com/finite-sample/R2OpenBUGS/issues
+Language: en-US

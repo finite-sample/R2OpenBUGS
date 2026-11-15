@@ -49,3 +49,15 @@ test_that("the schools posterior matches the known answer", {
   expect_true(all(fit$summary[, "Rhat"] < 1.1))
   expect_true(is.finite(fit$pD) && is.finite(fit$DIC))
 })
+
+test_that("n.thin thins inside OpenBUGS: n.keep stays n.iter - n.burnin", {
+  skip_if_no_openbugs()
+  model <- withr::local_tempfile(fileext = ".txt")
+  writeLines("model { mu ~ dnorm(0, 1) }", model)
+  fit <- bugs(list(y = 1), NULL, "mu", model,
+    n.chains = 2, n.iter = 300, n.burnin = 100, n.thin = 3, DIC = FALSE,
+    working.directory = withr::local_tempdir()
+  )
+  expect_identical(fit$n.keep, 200)
+  expect_identical(dim(fit$sims.array)[1], 200L)
+})

@@ -30,8 +30,11 @@ jobs:
           set -euo pipefail
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends gcc-multilib
+          # Pinned to a commit and checked against a digest, because the
+          # tarball is compiled and installed with sudo.
           curl -fsSL -o /tmp/OpenBUGS.tar.gz \
-            https://github.com/chjackson/openbugsdoc/raw/refs/heads/main/OpenBUGS-3.2.3.tar.gz
+            https://github.com/chjackson/openbugsdoc/raw/27abd6d1eca1bebddedb6ee7366eab7907727c01/OpenBUGS-3.2.3.tar.gz
+          echo "a289c4da0c4ac371f8013226c85ebd0a9e1dec5de9b858950e4854cb814b4ed8  /tmp/OpenBUGS.tar.gz" | sha256sum -c -
           tar -xzf /tmp/OpenBUGS.tar.gz -C /tmp
           cd /tmp/OpenBUGS-3.2.3
           ./configure --prefix=/usr/local

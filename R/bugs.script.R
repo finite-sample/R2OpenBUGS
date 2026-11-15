@@ -8,9 +8,6 @@
            bugs.data.file, bugs.inits.files,
            over.relax = FALSE) {
     ## Write file script.txt for Bugs
-    if (n.iter - n.burnin < 2) {
-      stop("(n.iter-n.burnin) must be at least 2")
-    }
     working.directory <- getwd()
     script <- "script.txt"
 

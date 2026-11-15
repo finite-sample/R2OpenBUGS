@@ -32,7 +32,7 @@ Description: Using this package,
  convergence in a table and graph, and save the simulations in arrays for easy access
  in R. 
 Depends: R (>= 2.13.0)
-Imports: coda (>= 0.11-0), boot
+Imports: boot, checkmate (>= 2.0.0), cli (>= 3.4.0), coda (>= 0.11-0), rlang
 Suggests: testthat (>= 3.0.0), withr
 Config/testthat/edition: 3
 SystemRequirements: OpenBUGS (>= 3.2.2)

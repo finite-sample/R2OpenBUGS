@@ -1,5 +1,25 @@
 # R2OpenBUGS (development version)
 
+## Bug fixes
+
+- `as.bugs.array()` placed the draws of a matrix or higher-dimensional
+  parameter by column position, assuming BUGS order (last index fastest).
+  Draws named in column-major order, as JAGS and Stan write them, landed in
+  the wrong cells of `sims.list`, `mean`, `sd`, `median` and `last.values`,
+  while `summary` stayed correct. They are now placed by name.
+- `bugs.data()` given data names looked them up two frames up, so a direct
+  call from inside a function could not see that function's variables. It
+  gains `envir`, defaulting to the caller's environment.
+- On Linux and macOS, the lookup for `wine` and `winepath` checked
+  `/usr/binwine` instead of `/usr/bin/wine`, so it depended on `which`.
+
+## Tests
+
+- A testthat suite. Where an exact answer exists the tests use it:
+  `monitor()`'s Rhat equals `coda::gelman.diag()`, and `bugs()` output agrees
+  with its own draws and with coda. Tests that need OpenBUGS run in a CI job
+  that builds OpenBUGS 3.2.3.
+
 ## Repository and documentation
 
 - The package now lives at <https://github.com/finite-sample/R2OpenBUGS>, with

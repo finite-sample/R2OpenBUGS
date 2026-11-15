@@ -67,7 +67,8 @@ jobs:
           source(ex, echo = TRUE, max.deparse.length = Inf)
           setwd(old)
 
+      # Through the package's own harness against the installed package, as
+      # R CMD check runs it, so the OpenBUGS tests skipped there run here.
       - name: testthat, with OpenBUGS available
-        if: hashFiles('tests/testthat/*.R') != ''
-        shell: Rscript {0}
-        run: testthat::test_local(stop_on_failure = TRUE)
+        working-directory: tests
+        run: Rscript testthat.R

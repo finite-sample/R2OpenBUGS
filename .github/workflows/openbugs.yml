@@ -1,0 +1,70 @@
+# The fleet check runs without OpenBUGS, so every example and test that calls
+# it is skipped there. This job builds OpenBUGS 3.2.3 from source on Linux and
+# runs those against the real sampler: validateInstallOpenBUGS() (the
+# package's own end-to-end check against stored results), the ?bugs example,
+# and the testthat suite with OpenBUGS on the PATH.
+name: openbugs
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  openbugs:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # OpenBUGS is a 32-bit program; its Linux build needs the multilib
+      # toolchain. The 3.2.3 source release is taken from its mirror
+      # in the chjackson/openbugsdoc repository.
+      - name: Build OpenBUGS 3.2.3
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends gcc-multilib
+          curl -fsSL -o /tmp/OpenBUGS.tar.gz \
+            https://github.com/chjackson/openbugsdoc/raw/refs/heads/main/OpenBUGS-3.2.3.tar.gz
+          tar -xzf /tmp/OpenBUGS.tar.gz -C /tmp
+          cd /tmp/OpenBUGS-3.2.3
+          ./configure --prefix=/usr/local
+          make
+          sudo make install
+          which OpenBUGS
+
+      - uses: r-lib/actions/setup-r@f9a764fea8d5c63df6ef9a5c7795bf7deb5d7e05 # v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@f9a764fea8d5c63df6ef9a5c7795bf7deb5d7e05 # v2
+        with:
+          extra-packages: any::testthat, local::.
+
+      - name: validateInstallOpenBUGS()
+        shell: Rscript {0}
+        run: |
+          library(R2OpenBUGS)
+          print(validateInstallOpenBUGS())
+
+      - name: Run the ?bugs example against OpenBUGS
+        shell: Rscript {0}
+        run: |
+          library(R2OpenBUGS)
+          set.seed(1)
+          ex <- tempfile(fileext = ".R")
+          tools::Rd2ex(tools::Rd_db("R2OpenBUGS")[["bugs.Rd"]], ex, commentDontrun = FALSE)
+          old <- setwd(tempdir())
+          source(ex, echo = TRUE, max.deparse.length = Inf)
+          setwd(old)
+
+      - name: testthat, with OpenBUGS available
+        if: hashFiles('tests/testthat/*.R') != ''
+        shell: Rscript {0}
+        run: testthat::test_local(stop_on_failure = TRUE)
